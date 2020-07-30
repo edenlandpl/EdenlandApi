@@ -23,13 +23,31 @@ namespace EdenlandAPI.Mapping
             // this syntax tells AutoMapper to use the new extension method to convert out EUnitOfMeasurement value into a string containing its description
             CreateMap<Product, ProductResource>().ForMember(src => src.UnitOfMeasurement, opt => opt.MapFrom(src => src.UnitOfMeasurement.ToDescriptionString()));
 
-            CreateMap<BeauticianModel, BeauticianResources>().ForMember(be => be.Treatments, opt => opt.MapFrom(d => d.Treatments
-            .Select(y => y.Treatments).ToList()));
+            //CreateMap<BeauticianModel, BeauticianResources>().ForMember(be => be.Treatments, opt => opt.MapFrom(d => d.Treatments
+            //    .Select(y => y.Treatment).ToList()));
 
-            CreateMap<TreatmentModel, TreatmentResources>().ForMember(tr => tr.Beauticians, opt => opt.MapFrom(d => d.Beauticians
-            .Select(y => y.Beauticians).ToList()));
-            //CreateMap<BeauticianModel, BeauticianResources>();
-            //CreateMap<TreatmentModel, TreatmentResources>();
+            //CreateMap<TreatmentModel, TreatmentResources>().ForMember(tr => tr.Beauticians, opt => opt.MapFrom(d => d.Beauticians
+            //    .Select(y => y.Beautician).ToList()));
+
+            //CreateMap<BeauticiansTreatmentsModel, BeauticiansTreatmentsResources>();
+
+            // to check this 
+            //CreateMap<BeauticiansTreatmentsModel, BeauticiansTreatmentsResources>()
+            //    .ForMember(bt => bt.Beauticians, opt => opt.MapFrom(src => src.Treatment
+            //    .Select(y => y.Beauticians).ToList()))
+            //    .ForMember(bt => bt.Treatments, opt => opt.MapFrom(src => src.Beautician
+            //    .Select(y => y.Treatments).ToList()));
+
+
+            //CreateMap<BeauticianModel, BeauticianResources>().ForMember(be => be.Treatments, opt => opt.MapFrom(d => d.Treatments
+            //.Select(y => y.TreatmentId).ToList()));
+
+            //CreateMap<TreatmentModel, TreatmentResources>().ForMember(tr => tr.Beauticians, opt => opt.MapFrom(d => d.Beauticians
+            //.Select(y => y.BeauticianId).ToList()));
+
+
+            CreateMap<BeauticianModel, BeauticianResources>();
+            CreateMap<TreatmentModel, TreatmentResources>();
         }
     }
 }

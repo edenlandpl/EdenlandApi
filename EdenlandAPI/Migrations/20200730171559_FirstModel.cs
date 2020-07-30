@@ -11,21 +11,21 @@ namespace EdenlandAPI.Migrations
                 name: "B_Beautician",
                 columns: table => new
                 {
-                    BeauticianId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_B_Beautician", x => x.BeauticianId);
+                    table.PrimaryKey("PK_B_Beautician", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "B_Treatments",
                 columns: table => new
                 {
-                    TreatmentId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameTreatment = table.Column<string>(nullable: true),
                     DescriptionTreatment = table.Column<string>(nullable: true),
@@ -34,7 +34,7 @@ namespace EdenlandAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_B_Treatments", x => x.TreatmentId);
+                    table.PrimaryKey("PK_B_Treatments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,25 +54,23 @@ namespace EdenlandAPI.Migrations
                 name: "B_ BeauticiansTreatments",
                 columns: table => new
                 {
-                    BeauticianTreatmentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     BeauticianId = table.Column<int>(nullable: false),
                     TreatmentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_B_ BeauticiansTreatments", x => x.BeauticianTreatmentId);
+                    table.PrimaryKey("PK_B_ BeauticiansTreatments", x => new { x.BeauticianId, x.TreatmentId });
                     table.ForeignKey(
                         name: "FK_B_ BeauticiansTreatments_B_Beautician_BeauticianId",
                         column: x => x.BeauticianId,
                         principalTable: "B_Beautician",
-                        principalColumn: "BeauticianId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_B_ BeauticiansTreatments_B_Treatments_TreatmentId",
                         column: x => x.TreatmentId,
                         principalTable: "B_Treatments",
-                        principalColumn: "TreatmentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -98,10 +96,38 @@ namespace EdenlandAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_B_ BeauticiansTreatments_BeauticianId",
+            migrationBuilder.InsertData(
+                table: "B_Beautician",
+                columns: new[] { "Id", "FirstName", "LastName" },
+                values: new object[,]
+                {
+                    { 100, "Andżelika", "Wągrowiec" },
+                    { 101, "Dorota", "Źdźbło" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "B_Treatments",
+                columns: new[] { "Id", "DescriptionTreatment", "NameTreatment", "PriceTreatment", "TimeSpanTreatment" },
+                values: new object[,]
+                {
+                    { 110, "Polewanie z konewki", "Bicze wodne", 120.0, new TimeSpan(0, 0, 10, 10, 0) },
+                    { 111, "Gorzka czekolada z dodatkiem olejków ukoi Twoje zmysły i przyniesie ukojenie", "Masaż czekoladowy", 220.0, new TimeSpan(0, 0, 30, 10, 0) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "B_ BeauticiansTreatments",
-                column: "BeauticianId");
+                columns: new[] { "BeauticianId", "TreatmentId" },
+                values: new object[] { 100, 110 });
+
+            migrationBuilder.InsertData(
+                table: "B_ BeauticiansTreatments",
+                columns: new[] { "BeauticianId", "TreatmentId" },
+                values: new object[] { 101, 110 });
+
+            migrationBuilder.InsertData(
+                table: "B_ BeauticiansTreatments",
+                columns: new[] { "BeauticianId", "TreatmentId" },
+                values: new object[] { 100, 111 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_B_ BeauticiansTreatments_TreatmentId",

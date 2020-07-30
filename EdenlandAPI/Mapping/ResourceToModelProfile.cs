@@ -19,6 +19,7 @@ namespace EdenlandAPI.Mapping
             CreateMap<SaveCategoryResource, Category>();
             CreateMap<SaveBeauticianResource, BeauticianModel>();
             CreateMap<SaveTreatmentResource, TreatmentModel>();
+            CreateMap<SaveBeauticiansTreatmentsResource, BeauticiansTreatmentsModel>();
         }
     }
 }

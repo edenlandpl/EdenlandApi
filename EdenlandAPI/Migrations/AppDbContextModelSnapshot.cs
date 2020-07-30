@@ -15,13 +15,13 @@ namespace EdenlandAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("EdenlandAPI.Domain.Models.Beautician.BeauticianModel", b =>
                 {
-                    b.Property<int>("BeauticianId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -32,36 +32,60 @@ namespace EdenlandAPI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BeauticianId");
+                    b.HasKey("Id");
 
                     b.ToTable("B_Beautician");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 100,
+                            FirstName = "Andżelika",
+                            LastName = "Wągrowiec"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            FirstName = "Dorota",
+                            LastName = "Źdźbło"
+                        });
                 });
 
             modelBuilder.Entity("EdenlandAPI.Domain.Models.Beautician.BeauticiansTreatmentsModel", b =>
                 {
-                    b.Property<int>("BeauticianTreatmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("BeauticianId")
                         .HasColumnType("int");
 
                     b.Property<int>("TreatmentId")
                         .HasColumnType("int");
 
-                    b.HasKey("BeauticianTreatmentId");
-
-                    b.HasIndex("BeauticianId");
+                    b.HasKey("BeauticianId", "TreatmentId");
 
                     b.HasIndex("TreatmentId");
 
                     b.ToTable("B_ BeauticiansTreatments");
+
+                    b.HasData(
+                        new
+                        {
+                            BeauticianId = 100,
+                            TreatmentId = 110
+                        },
+                        new
+                        {
+                            BeauticianId = 100,
+                            TreatmentId = 111
+                        },
+                        new
+                        {
+                            BeauticianId = 101,
+                            TreatmentId = 110
+                        });
                 });
 
             modelBuilder.Entity("EdenlandAPI.Domain.Models.Beautician.TreatmentModel", b =>
                 {
-                    b.Property<int>("TreatmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -78,9 +102,27 @@ namespace EdenlandAPI.Migrations
                     b.Property<TimeSpan>("TimeSpanTreatment")
                         .HasColumnType("time");
 
-                    b.HasKey("TreatmentId");
+                    b.HasKey("Id");
 
                     b.ToTable("B_Treatments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 110,
+                            DescriptionTreatment = "Polewanie z konewki",
+                            NameTreatment = "Bicze wodne",
+                            PriceTreatment = 120.0,
+                            TimeSpanTreatment = new TimeSpan(0, 0, 10, 10, 0)
+                        },
+                        new
+                        {
+                            Id = 111,
+                            DescriptionTreatment = "Gorzka czekolada z dodatkiem olejków ukoi Twoje zmysły i przyniesie ukojenie",
+                            NameTreatment = "Masaż czekoladowy",
+                            PriceTreatment = 220.0,
+                            TimeSpanTreatment = new TimeSpan(0, 0, 30, 10, 0)
+                        });
                 });
 
             modelBuilder.Entity("EdenlandAPI.Domain.Models.Category", b =>
@@ -126,13 +168,13 @@ namespace EdenlandAPI.Migrations
 
             modelBuilder.Entity("EdenlandAPI.Domain.Models.Beautician.BeauticiansTreatmentsModel", b =>
                 {
-                    b.HasOne("EdenlandAPI.Domain.Models.Beautician.BeauticianModel", "Beauticians")
+                    b.HasOne("EdenlandAPI.Domain.Models.Beautician.BeauticianModel", "Beautician")
                         .WithMany("Treatments")
                         .HasForeignKey("BeauticianId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EdenlandAPI.Domain.Models.Beautician.TreatmentModel", "Treatments")
+                    b.HasOne("EdenlandAPI.Domain.Models.Beautician.TreatmentModel", "Treatment")
                         .WithMany("Beauticians")
                         .HasForeignKey("TreatmentId")
                         .OnDelete(DeleteBehavior.Cascade)

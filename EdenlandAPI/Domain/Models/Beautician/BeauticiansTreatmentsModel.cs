@@ -10,11 +10,15 @@ namespace EdenlandAPI.Domain.Models.Beautician
     [Table("B_ BeauticiansTreatments")]
     public class BeauticiansTreatmentsModel
     {
-        [Key]
-        public int BeauticianTreatmentId { get; set;}
+        //[Key]
+        //[Required]
+        //public int Id { get; set; }
         public int BeauticianId { get; set; }
-        public BeauticianModel Beauticians { get; set; }
+
+        //[ForeignKey("BeauticianId")]
+        public BeauticianModel Beautician { get; set; }
+        //[Required]
         public int TreatmentId { get; set; }
-        public TreatmentModel Treatments { get; set; }
+        public TreatmentModel Treatment { get; set; }
     }
 }

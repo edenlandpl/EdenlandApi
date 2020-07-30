@@ -12,10 +12,14 @@ using EdenlandAPI.Services.Beautician;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Buffers;
 
 namespace EdenlandAPI
 {
@@ -40,7 +44,10 @@ namespace EdenlandAPI
             //services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("edenlandapi-in-memory"); });
 
             // register converter for TimeSpan Json
-            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter()));
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter())) ;
+
+            // line to ignore loop in json answer
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             // use SQL Server
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
@@ -53,6 +60,7 @@ namespace EdenlandAPI
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBeauticianRepository, BeauticianRepository>();
             services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+            services.AddScoped<IBeauticiansTreatmentsRepository, BeauticiansTreatmentsRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -60,6 +68,7 @@ namespace EdenlandAPI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBeauticianService, BeauticianService>();
             services.AddScoped<ITreatmentService, TreatmentService>();
+            services.AddScoped<IBeauticiansTreatmentsService, BeauticiansTreatmentsService>();
 
             // dodane zosta³o typeof(Startup) - poniewa¿ nie chcia³o siê kompilowaæ
             services.AddAutoMapper(typeof(Startup));
@@ -73,6 +82,9 @@ namespace EdenlandAPI
                 //services.AddSingleton(mapper);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +98,15 @@ namespace EdenlandAPI
             {
                 app.UseHsts();
             }
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseHttpsRedirection();
             //app.UseMvc();

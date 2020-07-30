@@ -11,19 +11,18 @@ namespace EdenlandAPI.Domain.Models.Beautician
     [Table("B_Treatments")]
     public class TreatmentModel
     {
-        [Key]
-        public int TreatmentId { get; set; }
+       public int Id { get; set; }
         public string NameTreatment { get; set; }
         public string DescriptionTreatment { get; set; }
         public TimeSpan TimeSpanTreatment { get; set; }
         public double PriceTreatment { get; set; }
 
-        public ICollection<BeauticiansTreatmentsModel> Beauticians { get; set; }
+        public ICollection<BeauticiansTreatmentsModel> Beauticians { get; set; } = new List<BeauticiansTreatmentsModel>();
 
-        public TreatmentModel()
-        {
-            this.Beauticians = new Collection<BeauticiansTreatmentsModel>();
-        }
+        //public TreatmentModel()
+        //{
+        //    this.BeauticiansTreatments = new Collection<BeauticiansTreatmentsModel>();
+        //}
 
 
         //public IList<BeauticianTreatmentsModel> BeauticiansTreatments { get; set; }

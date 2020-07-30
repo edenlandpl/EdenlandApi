@@ -14,9 +14,9 @@ namespace EdenlandAPI.Resources.Beautician
         public string LastName { get; set; }
         public ICollection<BeauticiansTreatmentsModel> Treatments { get; set; }
 
-        public BeauticianResources()
-        {
-            this.Treatments = new Collection<BeauticiansTreatmentsModel>();
-        }
+        //public BeauticianResources()
+        //{
+        //    this.Treatments = new Collection<BeauticiansTreatmentsModel>();
+        //}
     }
 }

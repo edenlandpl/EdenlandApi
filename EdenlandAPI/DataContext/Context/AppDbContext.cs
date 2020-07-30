@@ -1,6 +1,7 @@
 ﻿using EdenlandAPI.Domain.Models;
 using EdenlandAPI.Domain.Models.Beautician;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace EdenlandAPI.DataContext.Context
 {
@@ -17,18 +18,48 @@ namespace EdenlandAPI.DataContext.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<BeauticiansTreatmentsModel>().HasKey(beauticianTreatment => new { beauticianTreatment.BeauticianId, beauticianTreatment.TreatmentId});
+
+            // Demo data
+            builder.Entity<BeauticianModel>().HasData
+            (
+                new BeauticianModel { Id = 100, FirstName = "Andżelika", LastName = "Wągrowiec" },
+                new BeauticianModel { Id = 101, FirstName = "Dorota", LastName = "Źdźbło" }
+            );
+
+            TimeSpan exampleTimeSpan = new TimeSpan(00, 10, 10);
+            TimeSpan addedExampleTimeSpan = new TimeSpan(00, 20, 00);
+
+            builder.Entity<TreatmentModel>().HasData
+            (
+                new TreatmentModel { Id = 110, NameTreatment = "Bicze wodne", DescriptionTreatment = "Polewanie z konewki", TimeSpanTreatment = exampleTimeSpan, PriceTreatment = 120 },
+                new TreatmentModel { Id = 111, NameTreatment = "Masaż czekoladowy", DescriptionTreatment = "Gorzka czekolada z dodatkiem olejków ukoi Twoje zmysły i przyniesie ukojenie", TimeSpanTreatment = exampleTimeSpan.Add(addedExampleTimeSpan), PriceTreatment = 220 }
+            );
+
+            builder.Entity<BeauticiansTreatmentsModel>().HasData
+                (
+                    new BeauticiansTreatmentsModel { BeauticianId = 100, TreatmentId = 110 },
+                    new BeauticiansTreatmentsModel { BeauticianId = 100, TreatmentId = 111 },
+                    new BeauticiansTreatmentsModel { BeauticianId = 101, TreatmentId = 110 }
+                );
+
+
             //builder.Entity<BeauticiansTreatmentsModel>(builder => builder.HasNoKey());
 
-            builder.Entity<BeauticiansTreatmentsModel>()
-                .HasOne(bt => bt.Beauticians)
-                .WithMany(p => p.Treatments)
-                .HasForeignKey(mbt => mbt.BeauticianId);
+            //builder.Entity<BeauticiansTreatmentsModel>()
+            //    .HasOne(bt => bt.Beautician)
+            //    .WithMany(p => p.Treatments)
+            //    .HasForeignKey(mbt => mbt.BeauticianId);
 
-            builder.Entity<BeauticiansTreatmentsModel>()
-                .HasOne(pt => pt.Treatments)
-                .WithMany(t => t.Beauticians)
-                .HasForeignKey(pt => pt.TreatmentId);  
-            
+            //builder.Entity<BeauticiansTreatmentsModel>()
+            //    .HasOne(pt => pt.Treatment)
+            //    .WithMany(t => t.Beauticians)
+            //    .HasForeignKey(pt => pt.TreatmentId);  
+
+
+
+
+
             //base.OnModelCreating(builder);
 
             //builder.Entity<BeauticianModel>()

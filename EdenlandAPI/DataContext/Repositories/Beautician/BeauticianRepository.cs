@@ -16,6 +16,10 @@ namespace EdenlandAPI.DataContext.Repositories.Beautician
         // tutaj zmienione - sprawdź czy poprawnie działa
         public async Task<IEnumerable<BeauticianModel>> ListAync()
         {
+            // dobre do uruchomienia many-to-many - ze środkowego modelu
+            var x = _context.BeaticiansTreatments.Include(s => s.Treatment).Include(p => p.Beautician).ToList();
+            // nie działa
+            //var bea = _context.Beauticians.Include(p => p.BeauticiansTreatments).ThenInclude(s => s.Select( s => s.Treatments)).ToList();
             return await _context.Beauticians.Include(p => p.Treatments).ToListAsync();
         }
 

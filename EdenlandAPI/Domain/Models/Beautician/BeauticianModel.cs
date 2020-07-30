@@ -10,17 +10,17 @@ namespace EdenlandAPI.Domain.Models.Beautician
 {
     [Table("B_Beautician")]
     public class BeauticianModel
-    {        
-        [Key]
-        public int BeauticianId { get; set; }
+    {       
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<BeauticiansTreatmentsModel> Treatments { get; set; }
+        public ICollection<BeauticiansTreatmentsModel> Treatments { get; set; } = new List<BeauticiansTreatmentsModel>();
+       //public ICollection<BeauticiansTreatmentsModel> Treatments { get; set; } = new HashSet<BeauticiansTreatmentsModel>();
 
-        public BeauticianModel()
-        {
-            this.Treatments = new Collection<BeauticiansTreatmentsModel>();
-        }
+        //public BeauticianModel()
+        //{
+        //    this.BeauticiansTreatments = new Collection<BeauticiansTreatmentsModel>();
+        //}
 
 
         // do każdej Kosmetyczki możemy przypisać wiele zabiegów        
